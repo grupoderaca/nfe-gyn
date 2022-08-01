@@ -41,13 +41,13 @@ Este pacote está listado no Packgist foi desenvolvido para uso do Composer, por
 
 E deve ser instalado com:
 ```
-composer require nfephp-org/sped-nfse-amtec:dev-master --prefer-dist
+composer require grupoderaca/nfe-gyn:dev-master --prefer-dist
 ```
 
 Ou ainda alterando o composer.json do seu aplicativo inserindo:
 ```
 "require": {
-    "nfephp-org/sped-nfse-amtec" : "dev-master"
+    "grupoderaca/nfe-gyn" : "dev-master"
 }
 ```
 
@@ -59,7 +59,7 @@ composer require nfephp-org/sped-nfe:dev-master --prefer-dist
 Ou ainda alterando o composer.json do seu aplicativo inserindo:
 ```
 "require": {
-    "nfephp-org/sped-nfse-amtec" : "dev-master"
+    "grupoderaca/nfe-gyn" : "dev-master"
 }
 ```
 
@@ -436,25 +436,25 @@ A tag \<InfDeclaracaoPrestacaoServico\> deve conter também o namespace xmlns="h
 </soap12:Envelope>
 ```
 
-[ico-stable]: https://poser.pugx.org/nfephp-org/sped-nfse-amtec/version
-[ico-stars]: https://img.shields.io/github/stars/nfephp-org/sped-nfse-amtec.svg?style=flat-square
-[ico-forks]: https://img.shields.io/github/forks/nfephp-org/sped-nfse-amtec.svg?style=flat-square
-[ico-issues]: https://img.shields.io/github/issues/nfephp-org/sped-nfse-amtec.svg?style=flat-square
-[ico-travis]: https://img.shields.io/travis/nfephp-org/sped-nfse-amtec/master.svg?style=flat-square
-[ico-scrutinizer]: https://img.shields.io/scrutinizer/coverage/g/nfephp-org/sped-nfse-amtec.svg?style=flat-square
-[ico-code-quality]: https://img.shields.io/scrutinizer/g/nfephp-org/sped-nfse-amtec.svg?style=flat-square
-[ico-downloads]: https://img.shields.io/packagist/dt/nfephp-org/sped-nfse-amtec.svg?style=flat-square
-[ico-version]: https://img.shields.io/packagist/v/nfephp-org/sped-nfse-amtec.svg?style=flat-square
+[ico-stable]: https://poser.pugx.org/grupoderaca/nfe-gyn/version
+[ico-stars]: https://img.shields.io/github/stars/grupoderaca/nfe-gyn.svg?style=flat-square
+[ico-forks]: https://img.shields.io/github/forks/grupoderaca/nfe-gyn.svg?style=flat-square
+[ico-issues]: https://img.shields.io/github/issues/grupoderaca/nfe-gyn.svg?style=flat-square
+[ico-travis]: https://img.shields.io/travis/grupoderaca/nfe-gyn/master.svg?style=flat-square
+[ico-scrutinizer]: https://img.shields.io/scrutinizer/coverage/g/grupoderaca/nfe-gyn.svg?style=flat-square
+[ico-code-quality]: https://img.shields.io/scrutinizer/g/grupoderaca/nfe-gyn.svg?style=flat-square
+[ico-downloads]: https://img.shields.io/packagist/dt/grupoderaca/nfe-gyn.svg?style=flat-square
+[ico-version]: https://img.shields.io/packagist/v/grupoderaca/nfe-gyn.svg?style=flat-square
 [ico-license]: https://poser.pugx.org/nfephp-org/nfephp/license.svg?style=flat-square
 [ico-gitter]: https://img.shields.io/badge/GITTER-4%20users%20online-green.svg?style=flat-square
 
-[link-packagist]: https://packagist.org/packages/nfephp-org/sped-nfse-amtec
-[link-travis]: https://travis-ci.org/nfephp-org/sped-nfse-amtec
-[link-scrutinizer]: https://scrutinizer-ci.com/g/nfephp-org/sped-nfse-amtec/code-structure
-[link-code-quality]: https://scrutinizer-ci.com/g/nfephp-org/sped-nfse-amtec
-[link-downloads]: https://packagist.org/packages/nfephp-org/sped-nfse-amtec
+[link-packagist]: https://packagist.org/packages/grupoderaca/nfe-gyn
+[link-travis]: https://travis-ci.org/grupoderaca/nfe-gyn
+[link-scrutinizer]: https://scrutinizer-ci.com/g/grupoderaca/nfe-gyn/code-structure
+[link-code-quality]: https://scrutinizer-ci.com/g/grupoderaca/nfe-gyn
+[link-downloads]: https://packagist.org/packages/grupoderaca/nfe-gyn
 [link-author]: https://github.com/nfephp-org
-[link-issues]: https://github.com/nfephp-org/sped-nfse-amtec/issues
-[link-forks]: https://github.com/nfephp-org/sped-nfse-amtec/network
-[link-stars]: https://github.com/nfephp-org/sped-nfse-amtec/stargazers
+[link-issues]: https://github.com/grupoderaca/nfe-gyn/issues
+[link-forks]: https://github.com/grupoderaca/nfe-gyn/network
+[link-stars]: https://github.com/grupoderaca/nfe-gyn/stargazers
 
