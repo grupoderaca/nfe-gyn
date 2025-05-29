@@ -1,7 +1,7 @@
 {
     "name": "grupoderaca/nfe-gyn",
     "type": "library",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "description": "API para geração e comunicação de RPS e NFSe no padão AMTEC Goiania.",
     "keywords": ["nfe","nfse","sped","nfephp"],
     "homepage": "https://github.com/grupoderaca/nfe-gyn",
@@ -15,7 +15,7 @@
         }
     ],
     "require": {
-        "php" : ">= 7.1",
+        "php" : ">= 8.2",
         "nfephp-org/sped-common" : "^5.0",
         "justinrainbow/json-schema": "^5.2",
         "ext-zlib": "*",
