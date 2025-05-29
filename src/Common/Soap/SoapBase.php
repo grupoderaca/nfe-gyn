@@ -21,7 +21,7 @@ use NFePHP\Common\Exception\SoapException;
 use NFePHP\Common\Exception\RuntimeException;
 use NFePHP\Common\Strings;
 use League\Flysystem\Filesystem;
-use League\Flysystem\Adapter\Local;
+use League\Flysystem\Local\LocalFilesystemAdapter;
 use Psr\Log\LoggerInterface;
 
 abstract class SoapBase implements SoapInterface
@@ -99,7 +99,7 @@ abstract class SoapBase implements SoapInterface
      */
     protected $disableCertValidation = false;
     /**
-     * @var \League\Flysystem\Adapter\Local
+     * @var \League\Flysystem\Local\LocalFilesystemAdapter
      */
     protected $adapter;
     /**
@@ -160,7 +160,7 @@ abstract class SoapBase implements SoapInterface
         $this->certificate = $this->checkCertValidity($certificate);
         $this->setTemporaryFolder(sys_get_temp_dir() . '/sped/');
     }
-    
+
     /**
      * Check if certificate is valid
      * @param Certificate $certificate
@@ -181,7 +181,7 @@ abstract class SoapBase implements SoapInterface
         }
         return $certificate;
     }
-    
+
     /**
      * Destructor
      * Clean temporary files
@@ -190,7 +190,7 @@ abstract class SoapBase implements SoapInterface
     {
         $this->removeTemporarilyFiles();
     }
-    
+
     /**
      * Disables the security checking of host and peer certificates
      * @param bool $flag
@@ -200,7 +200,7 @@ abstract class SoapBase implements SoapInterface
         $this->disablesec = $flag;
         return $this->disablesec;
     }
-    
+
     /**
      * ONlY for tests
      * @param bool $flag
@@ -222,7 +222,7 @@ abstract class SoapBase implements SoapInterface
             $this->casefaz = $capath;
         }
     }
-    
+
     /**
      * Set option to encript private key before save in filesystem
      * for an additional layer of protection
@@ -233,7 +233,7 @@ abstract class SoapBase implements SoapInterface
     {
         return $this->encriptPrivateKey = $encript;
     }
-    
+
     /**
      * Set another temporayfolder for saving certificates for SOAP utilization
      * @param string $folderRealPath
@@ -243,14 +243,18 @@ abstract class SoapBase implements SoapInterface
         $this->tempdir = $folderRealPath;
         $this->setLocalFolder($folderRealPath);
     }
-    
+
     /**
      * Set Local folder for flysystem
      * @param string $folder
      */
     protected function setLocalFolder($folder = '')
     {
-        $this->adapter = new Local($folder);
+        if (empty($folder)) {
+            throw new \InvalidArgumentException('Pasta não pode estar vazia');
+        }
+
+        $this->adapter = new LocalFilesystemAdapter($folder);
         $this->filesystem = new Filesystem($this->adapter);
     }
 
@@ -263,7 +267,7 @@ abstract class SoapBase implements SoapInterface
     {
         return $this->debugmode = $value;
     }
-    
+
     /**
      * Set certificate class for SSL comunications
      * @param Certificate $certificate
@@ -272,7 +276,7 @@ abstract class SoapBase implements SoapInterface
     {
         $this->certificate = $this->checkCertValidity($certificate);
     }
-    
+
     /**
      * Set logger class
      * @param LoggerInterface $logger
@@ -281,7 +285,7 @@ abstract class SoapBase implements SoapInterface
     {
         return $this->logger = $logger;
     }
-    
+
     /**
      * Set timeout for communication
      * @param int $timesecs
@@ -290,7 +294,7 @@ abstract class SoapBase implements SoapInterface
     {
         return $this->soaptimeout = $timesecs;
     }
-    
+
     /**
      * Set security protocol
      * @param int $protocol
@@ -300,7 +304,7 @@ abstract class SoapBase implements SoapInterface
     {
         return $this->soapprotocol = $protocol;
     }
-    
+
     /**
      * Set prefixes
      * @param array $prefixes
@@ -310,7 +314,7 @@ abstract class SoapBase implements SoapInterface
     {
         return $this->prefixes = $prefixes;
     }
-    
+
     /**
      * Set proxy parameters
      * @param string $ip
@@ -325,7 +329,7 @@ abstract class SoapBase implements SoapInterface
         $this->proxyUser = $user;
         $this->proxyPass = $password;
     }
-    
+
     /**
      * Send message to webservice
      */
@@ -336,7 +340,7 @@ abstract class SoapBase implements SoapInterface
         $envelope,
         $parameters
     );
-    
+
     /**
      * Mount soap envelope
      * @param string $request
@@ -372,7 +376,7 @@ abstract class SoapBase implements SoapInterface
             . "</$prefix:Envelope>";
         return $envelope;
     }
-    
+
     /**
      * Temporarily saves the certificate keys for use cURL or SoapClient
      */
@@ -384,9 +388,9 @@ abstract class SoapBase implements SoapInterface
             );
         }
         $this->certsdir = $this->certificate->getCnpj() . '/certs/';
-        $this->prifile = $this->certsdir. Strings::randomString(10).'.pem';
-        $this->pubfile = $this->certsdir . Strings::randomString(10).'.pem';
-        $this->certfile = $this->certsdir . Strings::randomString(10).'.pem';
+        $this->prifile = $this->certsdir . Strings::randomString(10) . '.pem';
+        $this->pubfile = $this->certsdir . Strings::randomString(10) . '.pem';
+        $this->certfile = $this->certsdir . Strings::randomString(10) . '.pem';
         $ret = true;
         $private = $this->certificate->privateKey;
         if ($this->encriptPrivateKey) {
@@ -411,7 +415,7 @@ abstract class SoapBase implements SoapInterface
         );
         $ret &= $this->filesystem->put(
             $this->certfile,
-            $private."{$this->certificate}"
+            $private . "{$this->certificate}"
         );
         if (!$ret) {
             throw new RuntimeException(
@@ -419,12 +423,16 @@ abstract class SoapBase implements SoapInterface
             );
         }
     }
-    
+
     /**
      * Delete all files in folder
      */
     public function removeTemporarilyFiles()
     {
+        if (empty($this->certsdir)) {
+            return;
+        }
+        
         $contents = $this->filesystem->listContents($this->certsdir, true);
         //define um limite de $waitingTime min, ou seja qualquer arquivo criado a mais
         //de $waitingTime min será removido
@@ -437,12 +445,13 @@ abstract class SoapBase implements SoapInterface
         //utilize a API. Outra solução para remover arquivos "perdidos" pode ser
         //encontrada oportunamente.
         $dt = new \DateTime();
-        $tint = new \DateInterval("PT".$this->waitingTime."M");
+        $tint = new \DateInterval("PT" . $this->waitingTime . "M");
         $tint->invert = 1;
         $tsLimit = $dt->add($tint)->getTimestamp();
         foreach ($contents as $item) {
             if ($item['type'] == 'file') {
-                if ($item['path'] == $this->prifile
+                if (
+                    $item['path'] == $this->prifile
                     || $item['path'] == $this->pubfile
                     || $item['path'] == $this->certfile
                 ) {
@@ -457,7 +466,7 @@ abstract class SoapBase implements SoapInterface
             }
         }
     }
-    
+
     /**
      * Save request envelope and response for debug reasons
      * @param string $operation
